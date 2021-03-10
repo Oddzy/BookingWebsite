@@ -12,9 +12,9 @@ namespace BookingWebsite.ApiController
 
         private readonly IBookingService _bookingService;
 
-        public BookingController()
+        public BookingController(IBookingService bookingService)
         {
-            _bookingService = new BookingService();
+            _bookingService = bookingService;
         }
 
         [HttpPost("createBooking")]

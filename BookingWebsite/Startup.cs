@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BookingWebsite.Services;
 
 namespace BookingWebsite
 {
@@ -25,6 +26,8 @@ namespace BookingWebsite
         {
             services.AddSwaggerGen();
 
+            
+            services.AddScoped<IBookingService, BookingService>();
             services.AddControllersWithViews();
         }
 
