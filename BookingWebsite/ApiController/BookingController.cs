@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System;
+using BookingWebsite.Services;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using BookingWebsite.ApiController.Requests;
 
 namespace BookingWebsite.ApiController
 {
@@ -12,21 +10,43 @@ namespace BookingWebsite.ApiController
     public class BookingController : ControllerBase
     {
 
-        [HttpGet("people/all")]
-        public ActionResult<IEnumerable<Person>> GetAll()
+        private readonly IBookingService _bookingService;
+
+        public BookingController()
         {
-            return new[]
+            _bookingService = new BookingService();
+        }
+
+        [HttpPost("createBooking")]
+        public ActionResult CreateBooking([FromBody] CreateBookingRequest request)
+        {
+            Console.WriteLine($"Creating booking");
+            if (request == null)
             {
-                new Person { Name = "Ana" },
-                new Person { Name = "Felipe" },
-                new Person { Name = "Emillia" }
-            };
+                Console.WriteLine("Create booking request was null or invalid");
+                return null;
+            }
+
+            _bookingService.CreateBooking(request.Name,request.Email,request.BookingId,request.Operation);
+
+            var result = "Booking request sent";
+            return Ok(result);
+        }
+
+        [HttpPost("deleteBooking")]
+        public ActionResult DeleteBooking([FromBody] DeleteBookingRequest request)
+        {
+            Console.WriteLine($"Deleting booking");
+            if (request == null)
+            {
+                Console.WriteLine("Delete booking request was null or invalid");
+                return null;
+            }
+
+            _bookingService.DeleteBooking(request.BookingId,request.Operation);
+
+            var result = "Request for delete was sent";
+            return Ok(result);
         }
     }
-
-}
-
-public class Person
-{
-    public string Name { get; set; }
 }
